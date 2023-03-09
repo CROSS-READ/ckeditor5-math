@@ -83,16 +83,14 @@ export default class MathUI extends Plugin {
 		);
 
 		formView.mathInputView.bind( 'value' ).to( mathCommand, 'value' );
-		formView.displayButtonView.bind( 'isOn' ).to( mathCommand, 'display' );
 
 		// Form elements should be read-only when corresponding commands are disabled.
 		formView.mathInputView.bind( 'isReadOnly' ).to( mathCommand, 'isEnabled', value => !value );
 		formView.saveButtonView.bind( 'isEnabled' ).to( mathCommand );
-		formView.displayButtonView.bind( 'isEnabled' ).to( mathCommand );
 
 		// Listen to submit button click
 		this.listenTo( formView, 'submit', () => {
-			editor.execute( 'math', formView.equation, formView.displayButtonView.isOn, mathConfig.outputType, mathConfig.forceOutputType );
+			editor.execute( 'math', formView.equation, mathConfig.outputType, mathConfig.forceOutputType );
 			this._closeFormView();
 		} );
 
@@ -135,7 +133,6 @@ export default class MathUI extends Plugin {
 		}
 
 		this.formView.equation = mathCommand.value || '';
-		this.formView.displayButtonView.isOn = mathCommand.display || false;
 	}
 
 	_hideUI() {

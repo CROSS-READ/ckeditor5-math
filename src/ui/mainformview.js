@@ -2,7 +2,6 @@ import View from '@ckeditor/ckeditor5-ui/src/view';
 import ViewCollection from '@ckeditor/ckeditor5-ui/src/viewcollection';
 
 import ButtonView from '@ckeditor/ckeditor5-ui/src/button/buttonview';
-import SwitchButtonView from '@ckeditor/ckeditor5-ui/src/button/switchbuttonview';
 import LabeledInputView from '@ckeditor/ckeditor5-ui/src/labeledinput/labeledinputview';
 import InputTextView from '@ckeditor/ckeditor5-ui/src/inputtext/inputtextview';
 import LabelView from '@ckeditor/ckeditor5-ui/src/label/labelview';
@@ -38,13 +37,10 @@ export default class MainFormView extends View {
 		// Equation input
 		this.mathInputView = this._createMathInput();
 
-		// Display button
-		this.displayButtonView = this._createDisplayButton();
-
 		// Cancel button
 		this.cancelButtonView = this._createButton( t( 'Cancel' ), cancelIcon, 'ck-button-cancel', 'cancel' );
 
-		this.previewEnabled = previewEnabled;
+		this.previewEnabled = false;
 
 		let children = [];
 		if ( this.previewEnabled ) {
@@ -54,18 +50,15 @@ export default class MainFormView extends View {
 
 			// Math element
 			this.mathView = new MathView( engine, lazyLoad, locale, previewUid, previewClassName, katexRenderOptions );
-			this.mathView.bind( 'display' ).to( this.displayButtonView, 'isOn' );
 
 			children = [
 				this.mathInputView,
-				this.displayButtonView,
 				this.previewLabel,
 				this.mathView
 			];
 		} else {
 			children = [
-				this.mathInputView,
-				this.displayButtonView
+				this.mathInputView
 			];
 		}
 
@@ -108,7 +101,6 @@ export default class MainFormView extends View {
 		// Register form elements to focusable elements
 		const childViews = [
 			this.mathInputView,
-			this.displayButtonView,
 			this.saveButtonView,
 			this.cancelButtonView
 		];
@@ -174,9 +166,6 @@ export default class MainFormView extends View {
 					inputView.element.value = params.equation;
 
 					equationInput = params.equation;
-
-					// update display button and preview
-					this.displayButtonView.isOn = params.display;
 				}
 				if ( this.previewEnabled ) {
 					// Update preview view
@@ -213,34 +202,5 @@ export default class MainFormView extends View {
 		}
 
 		return button;
-	}
-
-	_createDisplayButton() {
-		const t = this.locale.t;
-
-		const switchButton = new SwitchButtonView( this.locale );
-
-		switchButton.set( {
-			label: t( 'Display mode' ),
-			withText: true
-		} );
-
-		switchButton.extendTemplate( {
-			attributes: {
-				class: 'ck-button-display-toggle'
-			}
-		} );
-
-		switchButton.on( 'execute', () => {
-			// Toggle state
-			switchButton.isOn = !switchButton.isOn;
-
-			if ( this.previewEnabled ) {
-				// Update preview view
-				this.mathView.display = switchButton.isOn;
-			}
-		} );
-
-		return switchButton;
 	}
 }
