@@ -1,3 +1,8 @@
+# Modifications to original plugin
+
+- removed preview
+- removed toggle preview button
+
 # CKEditor 5 mathematical feature &middot; [![GitHub license](https://img.shields.io/badge/license-ISC-blue.svg)](https://github.com/isaul32/ckeditor5-math/blob/master/LICENSE) [![npm version](https://img.shields.io/npm/v/ckeditor5-math.svg?style=flat)](https://www.npmjs.com/package/ckeditor5-math)
 
 ckeditor5-math is a TeX-based mathematical plugin for CKEditor 5. You can use it to insert, edit, and view mathematical equations and formulas. This plugin supports [MathJax], [KaTeX] and custom typesetting engines.
